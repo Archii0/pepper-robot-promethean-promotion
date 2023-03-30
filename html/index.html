@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+
+        <!-- Set viewport to fit the android tablet -->
+        <meta name="viewport" content="width=1280, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Promethean Promotion</title>
+        <script src="/libs/qi/2/qi.js"></script>
+		<script>
+            //Connect to NAOqi to use the session variable to call the TextToSpeech API later
+			var session;
+			try {
+				QiSession(function(s) {
+					console.log("Connected!")
+					session = s;
+				});
+			} catch (err) {
+				console.log(err);
+				console.log("Error connecting to NAOqi");
+			}
+		</script>
+        <style>
+            #frame {
+                background-image: url("LDE-Background.png");
+                background-position: center;
+                background-size: cover;
+                position: fixed;
+                height: 100%;
+                width: 100%;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body id="body">
+	    <div id="frame"></div>
+    </body>
+    <script>
+
+    current_index = -1
+
+    const stages = [
+        {
+            url: "promo1.png",
+            say: "Greetings, learners and visitors! I am your friendly classroom robot, and I'm excited to welcome you to our classroom.",
+            timeout: 8000
+        }, {
+            url: "promo2.png",
+            say: "As you can see, we have our state-of-the-art Promethean ActivPanel here, which is an amazing tool for presenting your projects to our teacher for assessment.",
+            timeout: 10000
+        }, {
+            url: "promo3.png",
+            say: "With the ActivPanel, you can showcase your work in a variety of formats, from video and audio presentations to interactive whiteboard displays. You can even connect your mobile devices to the panel to share your work with the entire class",
+            timeout: 16000
+        }, {
+            url: "promo4.png",
+            say: "The ActivPanel makes it easy for you to collaborate with your classmates on group projects too. You can use the panel to brainstorm ideas, share feedback, and work together to create amazing projects that demonstrate your learning.",
+            timeout: 14000
+        }, {
+            url: "promo5.png",
+            say: "And when it's time for your teacher to assess your work, the ActivPanel makes it easy for them to review and evaluate your projects. They can provide feedback directly on the panel, making it easy for you to make revisions and improvements to your work.",
+            timeout: 13000
+        }, {
+            url: "promo6.png",
+            say: "So, whether you're working on a group project or presenting your work individually, the ActivPanel is an incredible tool that will help you showcase your learning in the best possible way",
+            timeout: 11000
+        }, {
+            url: "promo7.png",
+            say: "We hope you enjoy using it as much as we do, and we look forward to seeing all of the amazing projects you create with it.",
+            timeout: 8000
+        }, {
+            url: "promo8.png",
+            say: "Thank you for visiting our classroom today!",
+            timeout: 4000
+        }, {
+            url: "promo1.png",
+            say: "",
+            timeout: 4000
+        }
+    ]
+
+    var timer = null;
+
+    function hide() {
+        document.getElementById("frame").style.background = "#ffffff"
+        document.getElementById("frame").click()
+    }  
+
+    document.getElementById("frame").addEventListener("click", function() {
+        if (timer != null) {
+            clearTimeout(timer)
+        }
+        ++current_index
+        if (current_index == stages.length -1) {
+            return
+        }
+        //change background image to image in the current stage
+        document.getElementById("frame").style.backgroundImage = 'url("' + stages[current_index]["url"] + '")'
+
+        //say the text stored in the current stage
+        sayTouchFeedback(stages[current_index]["say"])
+        
+        //timeout so the image will stay on the screen until the robot has finished talking
+        timer = setTimeout(hide, stages[current_index]["timeout"])
+
+    })
+
+    //when it reaches the end of the array, tap the screen to reset the current index and start the sequence again if necessary
+    document.getElementById("body").addEventListener("click", function() {
+        if (current_index == stages.length -1) {
+            current_index = -1
+        }
+    })
+
+    </script>
+    <script>
+        //function to call the TextToSpeech API
+        function sayTouchFeedback(speech) {
+            session.service('ALTextToSpeech').then(function (tts) {
+                tts.say(speech);
+            }, function (error) {
+                console.log(error);
+            })
+        }
+    </script>
+
+</html>
+<script>
+
+    //preload images to make them render faster when used
+    for (let i = 0; i < stages.length; i++) {
+        (new Image()).src = stages[i]["url"]
+    }
+</script>
