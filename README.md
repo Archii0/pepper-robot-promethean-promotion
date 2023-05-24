@@ -2,7 +2,7 @@
  This is a project made for the Pepper robot to promote Promethean ActivPanel products.
  It uses the NAOqi JavaScript SDK and calls the NAOqi API for things like the TextToSpeech service.
 
- This was written using a Pepper robot that ran NAOqi version: ________
+ This was written using a Pepper robot that ran NAOqi version: 2.5.5.5
 
  Clone the repository and open the .pml file in Choregraphe (version 2.5.10.7). The show app component will run the index.html file in the 'html' directory. From there all the functions and features are in the index.html file.
  
