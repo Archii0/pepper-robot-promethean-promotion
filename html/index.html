@@ -121,8 +121,8 @@
     <script>
         //function to call the TextToSpeech API
         function sayTouchFeedback(speech) {
-            session.service('ALTextToSpeech').then(function (tts) {
-                tts.say(speech);
+            session.service('ALAnimatedSpeech').then(function (tts) {
+                tts.say(speech, {"bodyLanguageMode":"contextual"});
             }, function (error) {
                 console.log(error);
             })
